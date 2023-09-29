@@ -41,12 +41,12 @@ export class CalculatorModel implements ICalculatorModel {
   private parseValues(values: string[]): number {
     if(values.length > 0) {
     let currentValue = this.valueToNumber(values[0]);
-    for(let i = 1; i < values.length; i = i + 2) {
+    for(let i = 1; i < values.length - 1; i = i + 2) {
       currentValue = this.evaluate(currentValue, values[i+1], values[i])
     }
     return currentValue;
   } else {
-
+    throw Error("Invalid Equation");
   }
   }
 
@@ -54,11 +54,12 @@ export class CalculatorModel implements ICalculatorModel {
    if(!isNaN(Number(value))) {
     return Number(value);
    } else {
-    throw new Error("Invalid Equation")
+    throw new Error("Invalid Equation");
    }
 }
 
 private evaluate(firstNumber: number, secondNumber: string, operator: string): number {
+  try {
   switch(operator) {
     case OperatorKeys.PLUS: {
       return firstNumber + this.valueToNumber(secondNumber);
@@ -73,6 +74,9 @@ private evaluate(firstNumber: number, secondNumber: string, operator: string): n
       return firstNumber / this.valueToNumber(secondNumber);
     }
   }
+} catch(e) {
+  throw new Error("Invalid Equation");
+}
 }
 
 }

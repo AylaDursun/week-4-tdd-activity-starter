@@ -97,4 +97,54 @@ describe('CalculatorModel', (): void => {
 
   });
 
+  it('should display 1 when the equals key is pressed ans 2 - 1 has been inputted', (): void => {
+    calculator.pressNumericKey(NumericKeys.TWO);
+    calculator.pressOperatorKey(OperatorKeys.MINUS);
+    calculator.pressNumericKey(NumericKeys.ONE);
+    calculator.pressActionKey(ActionKeys.EQUALS);
+
+    const displayValue: string = calculator.display();
+
+    expect(displayValue).toEqual("1");
+
+  });
+
+  it('should display 21 when the equals key is pressed ans 7 * 3 has been inputted', (): void => {
+    calculator.pressNumericKey(NumericKeys.SEVEN);
+    calculator.pressOperatorKey(OperatorKeys.MULT);
+    calculator.pressNumericKey(NumericKeys.THREE);
+    calculator.pressActionKey(ActionKeys.EQUALS);
+
+    const displayValue: string = calculator.display();
+
+    expect(displayValue).toEqual("21");
+
+  });
+
+  it('should display 4 when the equals key is pressed ans 12 / 3 has been inputted', (): void => {
+    calculator.pressNumericKey(NumericKeys.ONE);
+    calculator.pressNumericKey(NumericKeys.TWO);
+    calculator.pressOperatorKey(OperatorKeys.DIV);
+    calculator.pressNumericKey(NumericKeys.THREE);
+    calculator.pressActionKey(ActionKeys.EQUALS);
+
+    const displayValue: string = calculator.display();
+
+    expect(displayValue).toEqual("4");
+
+  });
+
+  it('should throw an error for an invalid equation', (): void => {
+    calculator.pressNumericKey(NumericKeys.THREE);
+    calculator.pressOperatorKey(OperatorKeys.DIV);
+    calculator.pressNumericKey(NumericKeys.ZERO);
+    calculator.pressActionKey(ActionKeys.EQUALS);
+
+    const displayValue: string = calculator.display();
+
+    expect(displayValue).toEqual("Infinity");
+
+  });
+
+
 });
