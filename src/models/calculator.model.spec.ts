@@ -62,7 +62,7 @@ describe('CalculatorModel', (): void => {
     calculator.pressOperatorKey(OperatorKeys.PLUS);
     const displayValue: string = calculator.display();
 
-    expect(displayValue).toEqual("+");
+    expect(displayValue).toEqual(" + ");
 
   });
 

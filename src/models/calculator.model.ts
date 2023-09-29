@@ -12,7 +12,8 @@ export class CalculatorModel implements ICalculatorModel {
   }
 
   public pressOperatorKey(key: OperatorKeys): void {
-    this._buffer += key;
+    let keyWithSpaces = " " + key + " ";
+    this._buffer += keyWithSpaces;
   }
 
   public pressActionKey(key: ActionKeys): void {
@@ -26,7 +27,8 @@ export class CalculatorModel implements ICalculatorModel {
          break; 
       } 
       case ActionKeys.EQUALS: { 
-        const values: string[] = this._buffer.split()
+        const values: string[] = this._buffer.split(" ")
+        this._buffer = this.parseValues(values).toString();
         break; 
       } 
    } 
@@ -35,5 +37,42 @@ export class CalculatorModel implements ICalculatorModel {
   public display(): string {
     return this._buffer;
   }
+
+  private parseValues(values: string[]): number {
+    if(values.length > 0) {
+    let currentValue = this.valueToNumber(values[0]);
+    for(let i = 1; i < values.length; i = i + 2) {
+      currentValue = this.evaluate(currentValue, values[i+1], values[i])
+    }
+    return currentValue;
+  } else {
+
+  }
+  }
+
+  private valueToNumber(value: string): number {
+   if(!isNaN(Number(value))) {
+    return Number(value);
+   } else {
+    throw new Error("Invalid Equation")
+   }
+}
+
+private evaluate(firstNumber: number, secondNumber: string, operator: string): number {
+  switch(operator) {
+    case OperatorKeys.PLUS: {
+      return firstNumber + this.valueToNumber(secondNumber);
+    }
+    case OperatorKeys.MINUS: {
+      return firstNumber - this.valueToNumber(secondNumber);
+    }
+    case OperatorKeys.MULT: {
+      return firstNumber * this.valueToNumber(secondNumber);
+    }
+    case OperatorKeys.DIV: {
+      return firstNumber / this.valueToNumber(secondNumber);
+    }
+  }
+}
 
 }
